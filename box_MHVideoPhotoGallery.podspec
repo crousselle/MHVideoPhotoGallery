@@ -1,16 +1,16 @@
 Pod::Spec.new do |s|
-  s.name         = 'MHVideoPhotoGallery'
-  s.version      = '1.6.7'
+  s.name         = 'box_MHVideoPhotoGallery'
+  s.version      = '2.0'
   s.license      = 'MIT'
-  s.homepage     = 'https://github.com/mariohahn/MHVideoPhotoGallery'
+  s.homepage     = 'https://github.com/crousselle/MHVideoPhotoGallery'
   s.author = {
-    'Mario Hahn' => 'mario_hahn@me.com'
+    'box-ios' => 'clement@box.com'
   }
-  s.summary      = 'Gallery for iOS 7 Devices.'
+  s.summary      = 'Gallery for iOS 7 Devices. Fork by Box.'
   s.platform     =  :ios
   s.source = {
-    :git => 'https://github.com/mariohahn/MHVideoPhotoGallery.git',
-    :tag => 'v1.6.7'
+    :git => 'https://github.com/crousselle/MHVideoPhotoGallery.git',
+    :tag => '2.0'
   }
 
   s.dependency "SDWebImage"
