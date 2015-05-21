@@ -879,7 +879,7 @@
 
 -(UIBarButtonItem*)nextBarButtonItem{
     return [UIBarButtonItem.alloc initWithTitle:@"Next"
-                                          style:UIBarButtonItemStyleBordered
+                                          style:UIBarButtonItemStylePlain
                                          target:self
                                          action:@selector(showShareSheet)];
 }
