@@ -97,7 +97,7 @@
     }else{
         if (self.galleryViewController.UICustomization.backButtonState == MHBackButtonStateWithoutBackArrow) {
             UIBarButtonItem *backBarButton = [UIBarButtonItem.alloc initWithImage:MHTemplateImage(@"ic_square")
-                                                                            style:UIBarButtonItemStyleBordered
+                                                                            style:UIBarButtonItemStylePlain
                                                                            target:self
                                                                            action:@selector(backButtonAction)];
             self.navigationItem.hidesBackButton = YES;
@@ -147,17 +147,17 @@
     self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
     
     self.playStopBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"play")
-                                                            style:UIBarButtonItemStyleBordered
+                                                            style:UIBarButtonItemStylePlain
                                                            target:self
                                                            action:@selector(playStopButtonPressed)];
     
     self.leftBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"left_arrow")
-                                                        style:UIBarButtonItemStyleBordered
+                                                        style:UIBarButtonItemStylePlain
                                                        target:self
                                                        action:@selector(leftPressed:)];
     
     self.rightBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"right_arrow")
-                                                         style:UIBarButtonItemStyleBordered
+                                                         style:UIBarButtonItemStylePlain
                                                         target:self
                                                         action:@selector(rightPressed:)];
     
