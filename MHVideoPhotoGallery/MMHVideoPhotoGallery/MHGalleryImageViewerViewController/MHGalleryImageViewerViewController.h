@@ -68,6 +68,10 @@
 -(void)removeAllMoviePlayerViewsAndNotifications;
 -(void)playButtonPressed;
 -(void)centerImageView;
+/**
+ *  Triggers any required network/cache operations to display images of videos.
+ */
+- (void)retrieveAndDisplayFileContents;
 
 +(MHImageViewController *)imageViewControllerForMHMediaItem:(MHGalleryItem*)item
                                            viewController:(MHGalleryImageViewerViewController*)viewController;
