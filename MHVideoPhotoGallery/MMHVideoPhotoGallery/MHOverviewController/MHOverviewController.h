@@ -29,5 +29,6 @@
 -(MHGalleryItem*)itemForIndex:(NSInteger)index;
 -(void)pushToImageViewerForIndexPath:(NSIndexPath*)indexPath;
 -(MHGalleryController*)galleryViewController;
+-(void)makeMHGalleryOverViewCell:(MHMediaPreviewCollectionViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
 @end

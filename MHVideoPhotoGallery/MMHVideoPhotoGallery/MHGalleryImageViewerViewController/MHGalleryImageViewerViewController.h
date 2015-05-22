@@ -37,6 +37,7 @@
 @property (nonatomic,getter = isHiddingToolBarAndNavigationBar)  BOOL hiddingToolBarAndNavigationBar;
 
 -(MHGalleryController*)galleryViewController;
+-(MHImageViewController *)imageViewControllerForIndex:(NSUInteger)index;
 -(void)updateToolBarForItem:(MHGalleryItem*)item;
 -(void)playStopButtonPressed;
 -(void)changeToPauseButton;
@@ -73,6 +74,8 @@
  */
 - (void)retrieveAndDisplayFileContents;
 
+- (instancetype)initWithMHMediaItem:(MHGalleryItem*)item
+                     viewController:(MHGalleryImageViewerViewController*)viewController;
 +(MHImageViewController *)imageViewControllerForMHMediaItem:(MHGalleryItem*)item
-                                           viewController:(MHGalleryImageViewerViewController*)viewController;
+                                             viewController:(MHGalleryImageViewerViewController*)viewController;
 @end
