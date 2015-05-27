@@ -1375,10 +1375,17 @@
     self.viewController.pageViewController.view.backgroundColor = [self.viewController.UICustomization MHGalleryBackgroundColorForViewMode:viewMode];
     
     self.navigationController.navigationBar.alpha =alpha;
-    self.viewController.toolbar.alpha =alpha;
     
-    self.viewController.descriptionView.alpha =alpha;
-    self.viewController.descriptionViewBackground.alpha =alpha;
+    if (self.viewController.toolbar.hidden == NO) {
+        self.viewController.toolbar.alpha =alpha;
+    }
+    
+    if (self.viewController.descriptionView.hidden == NO) {
+        self.viewController.descriptionView.alpha =alpha;
+    }
+    if (self.viewController.descriptionViewBackground.hidden == NO) {
+        self.viewController.descriptionViewBackground.alpha =alpha;
+    }
 
     if (!MHShouldShowStatusBar() || [self prefersStatusBarHidden]) {
         alpha = 0;
