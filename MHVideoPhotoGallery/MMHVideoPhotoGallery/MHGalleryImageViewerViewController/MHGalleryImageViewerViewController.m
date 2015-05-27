@@ -45,7 +45,7 @@
     if (![self.descriptionView isDescendantOfView:self.view]) {
         [self.view addSubview:self.descriptionView];
     }
-    if (![self.toolbar isDescendantOfView:self.view]) {
+    if (![self.toolbar isDescendantOfView:self.view] && self.UICustomization.hideToolbar == NO) {
         [self.view addSubview:self.toolbar];
     }
     [self.pageViewController.view.subviews.firstObject setFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
@@ -134,45 +134,50 @@
     [self.pageViewController didMoveToParentViewController:self];
     [self.view addSubview:self.pageViewController.view];
     
-    self.toolbar = [UIToolbar.alloc initWithFrame:CGRectMake(0, self.view.frame.size.height-44, self.view.frame.size.width, 44)];
-    if(self.currentOrientation == UIInterfaceOrientationLandscapeLeft || self.currentOrientation == UIInterfaceOrientationLandscapeRight){
-        if (self.view.bounds.size.height > self.view.bounds.size.width) {
-            self.toolbar.frame = CGRectMake(0, self.view.frame.size.width-44, self.view.frame.size.height, 44);
+    
+    if (self.UICustomization.hideToolbar == NO) {
+        self.toolbar = [UIToolbar.alloc initWithFrame:CGRectMake(0, self.view.frame.size.height-44, self.view.frame.size.width, 44)];
+        if(self.currentOrientation == UIInterfaceOrientationLandscapeLeft || self.currentOrientation == UIInterfaceOrientationLandscapeRight){
+            if (self.view.bounds.size.height > self.view.bounds.size.width) {
+                self.toolbar.frame = CGRectMake(0, self.view.frame.size.width-44, self.view.frame.size.height, 44);
+            }
         }
-    }
-    
-    self.toolbar.tintColor = self.UICustomization.barButtonsTintColor;
-    self.toolbar.tag = 307;
-    self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
-    
-    self.playStopBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"play")
+        
+        self.toolbar.tintColor = self.UICustomization.barButtonsTintColor;
+        self.toolbar.tag = 307;
+        self.toolbar.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleBottomMargin;
+        
+        self.playStopBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"play")
+                                                                style:UIBarButtonItemStylePlain
+                                                               target:self
+                                                               action:@selector(playStopButtonPressed)];
+        
+        self.leftBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"left_arrow")
                                                             style:UIBarButtonItemStylePlain
                                                            target:self
-                                                           action:@selector(playStopButtonPressed)];
-    
-    self.leftBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"left_arrow")
-                                                        style:UIBarButtonItemStylePlain
-                                                       target:self
-                                                       action:@selector(leftPressed:)];
-    
-    self.rightBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"right_arrow")
-                                                         style:UIBarButtonItemStylePlain
-                                                        target:self
-                                                        action:@selector(rightPressed:)];
-    
-    self.shareBarButton = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                      target:self
-                                                                      action:@selector(sharePressed)];
-    
-    if (self.UICustomization.hideShare) {
+                                                           action:@selector(leftPressed:)];
         
-        self.shareBarButton = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+        self.rightBarButton = [UIBarButtonItem.alloc initWithImage:MHGalleryImage(@"right_arrow")
+                                                             style:UIBarButtonItemStylePlain
+                                                            target:self
+                                                            action:@selector(rightPressed:)];
+        
+        self.shareBarButton = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                                           target:self
-                                                                          action:nil];
-        self.shareBarButton.width = 30;
+                                                                          action:@selector(sharePressed)];
+        
+        if (self.UICustomization.hideShare) {
+            
+            self.shareBarButton = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                              target:self
+                                                                              action:nil];
+            self.shareBarButton.width = 30;
+        }
+        
+        [self updateToolBarForItem:item];
+        self.toolbar.barTintColor = self.UICustomization.barTintColor;
+        self.toolbar.barStyle = self.UICustomization.barStyle;
     }
-    
-    [self updateToolBarForItem:item];
     
     self.descriptionViewBackground = [UIToolbar.alloc initWithFrame:CGRectZero];
     self.descriptionView = [UITextView.alloc initWithFrame:CGRectZero];
@@ -183,9 +188,6 @@
     self.descriptionView.scrollEnabled = NO;
     self.descriptionView.userInteractionEnabled = NO;
     
-    
-    self.toolbar.barTintColor = self.UICustomization.barTintColor;
-    self.toolbar.barStyle = self.UICustomization.barStyle;
     self.descriptionViewBackground.barTintColor = self.UICustomization.barTintColor;
     self.descriptionViewBackground.barStyle = self.UICustomization.barStyle;
     
@@ -1103,26 +1105,26 @@
 }
 
 - (void)loadStateDidChange:(NSNotification *)notification{
-	MPMoviePlayerController *player = notification.object;
-	MPMovieLoadState loadState = player.loadState;
-	if (loadState & MPMovieLoadStatePlayable){
+    MPMoviePlayerController *player = notification.object;
+    MPMovieLoadState loadState = player.loadState;
+    if (loadState & MPMovieLoadStatePlayable){
         if (!self.videoWasPlayable) {
             [self performSelectorOnMainThread:@selector(changeToPlayable)
                                    withObject:nil
                                 waitUntilDone:YES];
         }
         
-	}
+    }
     if (loadState & MPMovieLoadStatePlaythroughOK){
         self.videoDownloaded = YES;
-	}
-	
-	if (loadState & MPMovieLoadStateStalled){
+    }
+    
+    if (loadState & MPMovieLoadStateStalled){
         
         [self performSelectorOnMainThread:@selector(stopMovie)
                                withObject:nil
                             waitUntilDone:YES];
-	}
+    }
 }
 
 -(void)updateTimerLabels{
@@ -1369,14 +1371,14 @@
     if (viewMode == MHGalleryViewModeImageViewerNavigationBarShown) {
         alpha= 1;
     }
-
+    
     self.moviePlayer.backgroundView.backgroundColor = [self.viewController.UICustomization MHGalleryBackgroundColorForViewMode:viewMode];
     self.scrollView.backgroundColor = [self.viewController.UICustomization MHGalleryBackgroundColorForViewMode:viewMode];
     self.viewController.pageViewController.view.backgroundColor = [self.viewController.UICustomization MHGalleryBackgroundColorForViewMode:viewMode];
     
     self.navigationController.navigationBar.alpha =alpha;
     
-    if (self.viewController.toolbar.hidden == NO) {
+    if (self.viewController.UICustomization.hideToolbar == NO) {
         self.viewController.toolbar.alpha =alpha;
     }
     
@@ -1386,7 +1388,7 @@
     if (self.viewController.descriptionViewBackground.hidden == NO) {
         self.viewController.descriptionViewBackground.alpha =alpha;
     }
-
+    
     if (!MHShouldShowStatusBar() || [self prefersStatusBarHidden]) {
         alpha = 0;
     }
@@ -1502,7 +1504,7 @@
     self.playButton.frame = CGRectMake(self.viewController.view.frame.size.width/2-36, self.viewController.view.frame.size.height/2-36, 72, 72);
     self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width*self.scrollView.zoomScale, self.view.bounds.size.height*self.scrollView.zoomScale);
     self.imageView.frame = CGRectMake(0,0 , self.scrollView.contentSize.width,self.scrollView.contentSize.height);
-
+    
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
