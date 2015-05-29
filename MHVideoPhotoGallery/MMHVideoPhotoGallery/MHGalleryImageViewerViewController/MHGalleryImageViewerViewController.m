@@ -378,28 +378,29 @@
 }
 
 -(void)updateToolBarForItem:(MHGalleryItem*)item{
-    
-    UIBarButtonItem *flex = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                        target:self
-                                                                        action:nil];
-    
-    UIBarButtonItem *fixed = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
-                                                                         target:self
-                                                                         action:nil];
-    fixed.width = 30;
-    
-    [self enableOrDisbaleBarbButtons];
-    
-    if (item.galleryType == MHGalleryTypeVideo) {
-        MHImageViewController *imageViewController = self.pageViewController.viewControllers.firstObject;
-        if (imageViewController.isPlayingVideo) {
-            [self changeToPauseButton];
+    if (self.UICustomization.hideToolbar == NO) {
+        UIBarButtonItem *flex = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                            target:self
+                                                                            action:nil];
+        
+        UIBarButtonItem *fixed = [UIBarButtonItem.alloc initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace
+                                                                             target:self
+                                                                             action:nil];
+        fixed.width = 30;
+        
+        [self enableOrDisbaleBarbButtons];
+        
+        if (item.galleryType == MHGalleryTypeVideo) {
+            MHImageViewController *imageViewController = self.pageViewController.viewControllers.firstObject;
+            if (imageViewController.isPlayingVideo) {
+                [self changeToPauseButton];
+            }else{
+                [self changeToPlayButton];
+            }
+            self.toolbar.items = @[self.shareBarButton,flex,self.leftBarButton,flex,self.playStopBarButton,flex,self.rightBarButton,flex,fixed];
         }else{
-            [self changeToPlayButton];
+            self.toolbar.items =@[self.shareBarButton,flex,self.leftBarButton,flex,self.rightBarButton,flex,fixed];
         }
-        self.toolbar.items = @[self.shareBarButton,flex,self.leftBarButton,flex,self.playStopBarButton,flex,self.rightBarButton,flex,fixed];
-    }else{
-        self.toolbar.items =@[self.shareBarButton,flex,self.leftBarButton,flex,self.rightBarButton,flex,fixed];
     }
 }
 
@@ -805,6 +806,7 @@
         self.act.autoresizingMask =UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
         [self.scrollView addSubview:self.act];
         if (self.item.galleryType != MHGalleryTypeImage) {
+            [self addPlayButtonToView];
             [self updateUIForVideoFile];
         }
         
@@ -820,8 +822,6 @@
 
 - (void)updateUIForVideoFile
 {
-    [self addPlayButtonToView];
-    
     self.moviePlayerToolBarTop = [UIToolbar.alloc initWithFrame:CGRectMake(0, self.navigationController.navigationBar.bounds.size.height+([UIApplication sharedApplication].statusBarHidden?0:20), self.view.frame.size.width, 44)];
     self.moviePlayerToolBarTop.autoresizingMask =UIViewAutoresizingFlexibleWidth;
     self.moviePlayerToolBarTop.alpha =0;
