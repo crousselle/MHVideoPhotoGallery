@@ -64,11 +64,12 @@
 @property (nonatomic)                                BOOL videoWasPlayable;
 @property (nonatomic)                                BOOL videoDownloaded;
 
-
+-(void)updateUIForVideoFile;
 -(void)stopMovie;
 -(void)removeAllMoviePlayerViewsAndNotifications;
 -(void)playButtonPressed;
 -(void)centerImageView;
+
 /**
  *  Triggers any required network/cache operations to display images of videos.
  */
