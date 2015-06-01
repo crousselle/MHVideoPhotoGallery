@@ -42,6 +42,8 @@
 -(void)playStopButtonPressed;
 -(void)changeToPauseButton;
 -(void)changeToPlayButton;
+- (void)hideToolbar:(BOOL)hidden;
+
 @end
 
 @interface MHImageViewController : UIViewController<UIScrollViewDelegate,UIGestureRecognizerDelegate>
@@ -64,12 +66,12 @@
 @property (nonatomic)                                BOOL videoWasPlayable;
 @property (nonatomic)                                BOOL videoDownloaded;
 
+-(void)changeUIForViewMode:(MHGalleryViewMode)viewMode;
 -(void)updateUIForVideoFile;
 -(void)stopMovie;
 -(void)removeAllMoviePlayerViewsAndNotifications;
 -(void)playButtonPressed;
 -(void)centerImageView;
-
 /**
  *  Triggers any required network/cache operations to display images of videos.
  */

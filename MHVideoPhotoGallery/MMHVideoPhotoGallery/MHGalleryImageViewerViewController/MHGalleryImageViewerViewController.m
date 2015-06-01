@@ -553,6 +553,11 @@
     
 }
 
+- (void)hideToolbar:(BOOL)hidden
+{
+    self.toolbar.hidden = hidden;
+}
+
 @end
 
 @interface MHImageViewController ()
@@ -1414,11 +1419,11 @@
             
             self.viewController.hiddingToolBarAndNavigationBar = YES;
             self.navigationController.navigationBar.hidden  =YES;
-            self.viewController.toolbar.hidden =YES;
+            [self.viewController hideToolbar:YES];
         }];
     }else{
         self.navigationController.navigationBar.hidden = NO;
-        self.viewController.toolbar.hidden = NO;
+        [self.viewController hideToolbar:NO];
         
         [UIView animateWithDuration:0.3 animations:^{
             [self changeUIForViewMode:MHGalleryViewModeImageViewerNavigationBarShown];
@@ -1544,5 +1549,6 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
     
 }
+
 @end
 
