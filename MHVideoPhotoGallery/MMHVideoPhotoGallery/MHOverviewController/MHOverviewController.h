@@ -20,10 +20,10 @@
 
 @interface MHOverviewController : UIViewController<UICollectionViewDataSource,UICollectionViewDelegate,UINavigationControllerDelegate,UIGestureRecognizerDelegate>
 
-@property (strong, nonatomic) UICollectionView      *collectionView;
+@property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong,nonatomic ) MHMediaPreviewCollectionViewCell *clickedCell;
-@property (nonatomic)         NSInteger             currentPage;
-@property (nonatomic, strong) NSArray               *galleryItems;
+@property (nonatomic) NSInteger currentPage;
+@property (nonatomic, copy) NSArray *galleryItems;
 
 -(UICollectionViewFlowLayout*)layoutForOrientation:(UIInterfaceOrientation)orientation;
 -(MHGalleryItem*)itemForIndex:(NSInteger)index;
