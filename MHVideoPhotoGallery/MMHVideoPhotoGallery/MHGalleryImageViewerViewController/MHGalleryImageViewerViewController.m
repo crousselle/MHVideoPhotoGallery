@@ -328,11 +328,14 @@
 
 -(void)updateTitleAndDescriptionForScrollView:(UIScrollView*)scrollView{
     NSInteger pageIndex = self.pageIndex;
-    if (scrollView.contentOffset.x > (self.view.frame.size.width+self.view.frame.size.width/2)) {
-        pageIndex++;
-    }
-    if (scrollView.contentOffset.x < self.view.frame.size.width/2) {
-        pageIndex--;
+    // If the user is not scrolling, trust the page index property instead of calculating it dynamically. This would lead to wrong numbers when animating deletions.
+    if (self.userScrolls) {
+        if (scrollView.contentOffset.x > (self.view.frame.size.width+self.view.frame.size.width/2)) {
+            pageIndex++;
+        }
+        if (scrollView.contentOffset.x < self.view.frame.size.width/2) {
+            pageIndex--;
+        }
     }
     [self updateDescriptionLabelForIndex:pageIndex];
     [self updateTitleForIndex:pageIndex];
@@ -556,6 +559,48 @@
 - (void)hideToolbar:(BOOL)hidden
 {
     self.toolbar.hidden = hidden;
+}
+
+-(void)deleteItemAtIndex:(NSInteger)index
+{
+    NSInteger newIndex = index;
+    
+    // Cleanup the movie player if there is any, to avoid any crashers due to notifications.
+    MHGalleryItem *deletedItem = [self.galleryViewController.dataSource itemForIndex:index];
+    if (deletedItem.galleryType == MHGalleryTypeVideo) {
+        MHImageViewController *controller = [self.pageViewController.viewControllers objectAtIndex:index];
+        [controller removeAllMoviePlayerViewsAndNotifications];
+    }
+    
+    // If the deleted item is the last one, we'll display the last before one item.
+    if (index  == [self.galleryViewController numberOfItemsInGallery:self.galleryViewController] - 1) {
+        newIndex --;
+    }
+    
+    [self.galleryViewController.dataSource removeItemAtIndex:index];
+    
+    // We're deleting the last page, just dismiss the controller
+    if ([self.galleryViewController.dataSource numberOfItemsInGallery:self.galleryViewController] == 0) {
+        [self.galleryViewController dismissViewControllerAnimated:YES completion:nil];
+        return;
+    }
+    
+    self.pageIndex = newIndex;
+    
+    UIPageViewControllerNavigationDirection direction = (index == 0) ? UIPageViewControllerNavigationDirectionForward : UIPageViewControllerNavigationDirectionReverse;
+    MHImageViewController *imageViewController = [self imageViewControllerForIndex:newIndex];
+    imageViewController.pageIndex = newIndex;
+    
+    if (imageViewController) {
+        __weak typeof(self) weakSelf = self;
+        [self.pageViewController setViewControllers:@[imageViewController] direction:direction animated:YES completion:^(BOOL finished) {
+            [weakSelf setPageIndex:imageViewController.pageIndex];
+            [weakSelf updateToolBarForItem:[weakSelf itemForIndex:weakSelf.pageIndex]];
+            [weakSelf showCurrentIndex:weakSelf.pageIndex];
+            [weakSelf updateTitleForIndex:imageViewController.pageIndex];
+            [weakSelf updateDescriptionLabelForIndex:imageViewController.pageIndex];
+        }];
+    }
 }
 
 @end
