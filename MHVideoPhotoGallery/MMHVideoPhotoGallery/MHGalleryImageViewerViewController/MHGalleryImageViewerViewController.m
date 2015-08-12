@@ -1214,7 +1214,7 @@
     }
     self.playButton = [UIButton.alloc initWithFrame:self.viewController.view.bounds];
     self.playButton.frame = CGRectMake(self.viewController.view.frame.size.width/2-36, self.viewController.view.frame.size.height/2-36, 72, 72);
-    [self.playButton setImage:MHGalleryImage(@"playButton") forState:UIControlStateNormal];
+    [self.playButton setImage:MHGalleryImage(@"media_play_big_button") forState:UIControlStateNormal];
     self.playButton.tag =508;
     self.playButton.hidden =YES;
     [self.playButton addTarget:self action:@selector(playButtonPressed) forControlEvents:UIControlEventTouchUpInside];
