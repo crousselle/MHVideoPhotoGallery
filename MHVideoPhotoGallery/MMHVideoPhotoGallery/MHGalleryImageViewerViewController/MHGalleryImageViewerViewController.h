@@ -21,7 +21,7 @@
 
 @interface MHGalleryImageViewerViewController : UIViewController<UIPageViewControllerDelegate,UIPageViewControllerDataSource,UINavigationControllerDelegate,UIScrollViewDelegate,UIGestureRecognizerDelegate,UINavigationBarDelegate>
 
-@property (nonatomic, strong)          NSArray *galleryItems;
+@property (nonatomic, copy)            NSArray *galleryItems;
 @property (nonatomic, strong)          UIToolbar *toolbar;
 @property (nonatomic, strong)          UITextView *descriptionView;
 @property (nonatomic, strong)          UIToolbar *descriptionViewBackground;
@@ -37,10 +37,13 @@
 @property (nonatomic,getter = isHiddingToolBarAndNavigationBar)  BOOL hiddingToolBarAndNavigationBar;
 
 -(MHGalleryController*)galleryViewController;
+-(MHImageViewController *)imageViewControllerForIndex:(NSUInteger)index;
 -(void)updateToolBarForItem:(MHGalleryItem*)item;
 -(void)playStopButtonPressed;
 -(void)changeToPauseButton;
 -(void)changeToPlayButton;
+-(void)hideToolbar:(BOOL)hidden;
+-(void)deleteItemAtIndex:(NSInteger)index;
 @end
 
 @interface MHImageViewController : UIViewController<UIScrollViewDelegate,UIGestureRecognizerDelegate>
@@ -63,12 +66,19 @@
 @property (nonatomic)                                BOOL videoWasPlayable;
 @property (nonatomic)                                BOOL videoDownloaded;
 
-
+-(void)changeUIForViewMode:(MHGalleryViewMode)viewMode;
+-(void)updateUIForVideoFile;
 -(void)stopMovie;
 -(void)removeAllMoviePlayerViewsAndNotifications;
 -(void)playButtonPressed;
 -(void)centerImageView;
+/**
+ *  Triggers any required network/cache operations to display images of videos.
+ */
+- (void)retrieveAndDisplayFileContents;
 
+- (instancetype)initWithMHMediaItem:(MHGalleryItem*)item
+                     viewController:(MHGalleryImageViewerViewController*)viewController;
 +(MHImageViewController *)imageViewControllerForMHMediaItem:(MHGalleryItem*)item
-                                           viewController:(MHGalleryImageViewerViewController*)viewController;
+                                             viewController:(MHGalleryImageViewerViewController*)viewController;
 @end
