@@ -795,7 +795,7 @@
 
 
 - (id)initWithMHMediaItem:(MHGalleryItem*)mediaItem
-           viewController:(MHGalleryImageViewerViewController*)viewController{
+           viewController:(MHGalleryImageViewerViewController*)viewController {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         
@@ -1093,12 +1093,13 @@
     return NO;
 }
 
--(void)sliderDidDragExit:(UISlider*)slider{
+-(void)sliderDidDragExit:(UISlider*)slider {
     if (self.playingVideo) {
         [self.moviePlayer play];
     }
 }
--(void)sliderDidChange:(UISlider*)slider{
+
+-(void)sliderDidChange:(UISlider*)slider {
     if (self.moviePlayer) {
         [self.moviePlayer pause];
         self.moviePlayer.currentPlaybackTime = slider.value;
@@ -1107,7 +1108,7 @@
     }
 }
 
--(void)stopMovie{
+-(void)stopMovie {
     
     self.shouldPlayVideo = NO;
     
@@ -1121,7 +1122,7 @@
     [self.viewController changeToPlayButton];
 }
 
--(void)changeToPlayable{
+-(void)changeToPlayable {
     self.videoWasPlayable = YES;
     if(!self.viewController.isHiddingToolBarAndNavigationBar){
         self.moviePlayerToolBarTop.alpha =1;
@@ -1208,7 +1209,7 @@
     [self updateTimerLabels];
 }
 
--(void)addPlayButtonToView{
+-(void)addPlayButtonToView {
     if (self.playButton) {
         [self.playButton removeFromSuperview];
     }
@@ -1253,7 +1254,7 @@
     self.moviePlayer = nil;
     
     [self addPlayButtonToView];
-    self.playButton.hidden =NO;
+    self.playButton.hidden = NO;
     self.playButton.frame = CGRectMake(self.viewController.view.frame.size.width/2-36, self.viewController.view.frame.size.height/2-36, 72, 72);
     [self.moviewPlayerButtonBehinde removeFromSuperview];
     [self.viewController changeToPlayButton];
@@ -1320,13 +1321,13 @@
     [self changeToPlayable];
 }
 
--(void)bringMoviePlayerToFront{
+-(void)bringMoviePlayerToFront {
     [self.view bringSubviewToFront:self.moviePlayer.view];
     [self.view bringSubviewToFront:self.moviewPlayerButtonBehinde];
     [self.view bringSubviewToFront:self.moviePlayerToolBarTop];
 }
 
--(void)playButtonPressed{
+-(void)playButtonPressed {
     if (!self.playingVideo) {
         
         [self bringMoviePlayerToFront];
@@ -1355,11 +1356,12 @@
         }
         
     }else{
+        [self.playButton setHidden:NO];
         [self stopMovie];
     }
 }
 
--(MHGalleryViewMode)currentViewMode{
+-(MHGalleryViewMode)currentViewMode {
     if (self.viewController.isHiddingToolBarAndNavigationBar) {
         return MHGalleryViewModeImageViewerNavigationBarHidden;
     }
