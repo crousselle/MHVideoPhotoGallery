@@ -92,15 +92,6 @@
 -(void)presentMHGalleryController:(MHGalleryController *)galleryController
                          animated:(BOOL)animated
                        completion:(void (^)(void))completion{
-
-    if(galleryController.UICustomization.useCustomBackButtonImageOnImageViewer){
-        UIBarButtonItem *backBarButton = [UIBarButtonItem.alloc initWithImage:MHTemplateImage(@"ic_square")
-                                                                        style:UIBarButtonItemStylePlain
-                                                                       target:self
-                                                                       action:nil];
-        galleryController.overViewViewController.navigationItem.backBarButtonItem = backBarButton;
-        galleryController.navigationBar.tintColor = galleryController.UICustomization.barButtonsTintColor;
-    }
     
     if (galleryController.transitionCustomization.interactiveDismiss) {
         galleryController.transitioningDelegate = self;
@@ -109,9 +100,7 @@
         galleryController.transitionCustomization.interactiveDismiss = NO;
         galleryController.transitionCustomization.dismissWithScrollGestureOnFirstAndLastImage = NO;
     }
-    galleryController.navigationBar.barStyle = galleryController.UICustomization.barStyle;
-    galleryController.navigationBar.barTintColor = galleryController.UICustomization.barTintColor;
-    
+ 
     if (!galleryController.dataSource) {
         galleryController.dataSource = galleryController;
     }
